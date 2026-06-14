@@ -3,203 +3,168 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ken's Mods - Portal</title>
+    <title>My Idea Vault</title>
     <style>
+        /* Dark Mode Styling */
         body {
-            background-color: #0d0e12;
-            color: #f5f5f8;
-            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: #121212;
+            color: #e0e0e0;
+            font-family: system-ui, -apple-system, sans-serif;
             margin: 0;
             padding: 40px 20px;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
+
         .container {
-            max-width: 600px;
             width: 100%;
+            max-width: 600px;
         }
+
         h1 {
-            color: #1bd96a;
-            font-size: 32px;
-            margin-bottom: 5px;
-            text-align: center;
+            color: #ffffff;
+            margin-bottom: 20px;
         }
-        .subtitle {
-            color: #757780;
-            margin-bottom: 40px;
-            text-align: center;
-            font-size: 14px;
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+            font-size: 16px;
+            resize: vertical; /* Allows resizing only up and down */
         }
-        .link-card {
-            background: linear-gradient(135deg, #1f202a, #15151b);
-            border: 1px solid #333440;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+
+        textarea:focus {
+            outline: none;
+            border-color: #bb86fc; /* Subtle purple highlight when typing */
         }
-        .code-display {
-            font-size: 48px;
+
+        .btn {
+            background-color: #bb86fc; 
+            color: #121212;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
             font-weight: bold;
-            color: #1bd96a;
-            letter-spacing: 6px;
-            margin: 20px 0;
-            font-family: monospace;
-            text-shadow: 0 0 10px rgba(27, 217, 106, 0.3);
+            font-size: 16px;
+            transition: background-color 0.2s;
         }
-        .form-card {
-            background-color: #141419;
-            border: 1px dashed #444550;
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
+
+        .btn:hover {
+            background-color: #9b59b6;
         }
-        .form-group {
+
+        #ideas-container {
+            margin-top: 30px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 15px;
         }
-        .form-group label {
-            font-size: 14px;
-            color: #a0a2b0;
+
+        .idea-card {
+            background-color: #1e1e1e;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            line-height: 1.5;
+            white-space: pre-wrap; /* Keeps line breaks from your textarea */
         }
-        .form-group input {
-            background-color: #0d0e12;
-            border: 1px solid #3c3d4a;
-            padding: 12px;
-            border-radius: 6px;
-            color: white;
-            font-size: 16px;
-            outline: none;
-        }
-        .form-group input:focus {
-            border-color: #1bd96a;
-        }
-        .btn {
-            background-color: #1bd96a;
-            color: #0d0e12;
+
+        .delete-btn {
+            background-color: #cf6679; /* Reddish color for delete */
+            color: #121212;
             border: none;
-            padding: 12px;
+            padding: 8px 12px;
             border-radius: 6px;
-            font-size: 16px;
-            font-weight: bold;
             cursor: pointer;
-            transition: opacity 0.2s;
+            font-weight: bold;
+            font-size: 14px;
         }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .logout-link {
-            display: block;
-            margin-top: 15px;
-            color: #ff3366;
-            text-decoration: none;
-            font-size: 13px;
+
+        .delete-btn:hover {
+            background-color: #b33951;
         }
     </style>
 </head>
 <body>
+
     <div class="container">
-        <h1>Ken's Mods Account Portal</h1>
-        <p class="subtitle">Securely link your profile and download your mods</p>
+        <h1>💡 Idea Vault</h1>
+        
+        <textarea id="idea-input" placeholder="What's your next big idea?"></textarea>
+        <button id="start-btn" class="btn">Start Idea</button>
 
-        <div class="link-card">
-            <div id="welcome-msg" style="font-size: 18px;">Checking connection...</div>
-            <div class="code-display" id="link-code">------</div>
-            <p style="color: #a0a2b0; font-size: 13px; margin: 0;">Enter this 1-time code inside the desktop app to link your account.</p>
-        </div>
-
-        <!-- Sign Up Block (Hidden if cookie exists) -->
-        <div class="form-card" id="guest-prompt" style="display: none;">
-            <div class="form-group">
-                <label for="username-input">Create a custom profile name:</label>
-                <input type="text" id="username-input" placeholder="Enter username...">
-                <button class="btn" id="signup-btn">Sign Up & Generate Code</button>
-            </div>
-        </div>
-
-        <div class="form-card" id="user-panel" style="display: none; text-align: center;">
-            <p style="color: #1bd96a; font-size: 14px; margin: 0;">Your profile is locked to this web browser.</p>
-            <a href="#" class="logout-link" id="logout-btn">Delete Account / Sign Out</a>
+        <div id="ideas-container">
+            <!-- Ideas will appear here -->
         </div>
     </div>
 
     <script>
-        const FIREBASE_URL = "https://apiforapp-24f75-default-rtdb.firebaseio.com/codes/";
+        // Grab elements from the page
+        const input = document.getElementById('idea-input');
+        const startBtn = document.getElementById('start-btn');
+        const ideasContainer = document.getElementById('ideas-container');
 
-        function getCookie(name) {
-            let value = "; " + document.cookie;
-            let parts = value.split("; " + name + "=");
-            if (parts.length == 2) return parts.pop().split(";").shift();
-            return null;
-        }
+        // Load existing ideas from local storage, or start with an empty array
+        let ideas = JSON.parse(localStorage.getItem('savedIdeas')) || [];
 
-        function setCookie(name, value, days) {
-            let expires = "";
-            if (days) {
-                let date = new Date();
-                date.setTime(date.getTime() + (days*24*60*60*1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "")  + expires + "; path=/";
-        }
+        // Function to draw the ideas on the screen
+        function renderIdeas() {
+            ideasContainer.innerHTML = ''; // Clear the current list
+            
+            ideas.forEach((idea, index) => {
+                const card = document.createElement('div');
+                card.className = 'idea-card';
 
-        function generate6DigitCode() {
-            let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            let code = "";
-            for (let i = 0; i < 6; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return code;
-        }
+                const textSpan = document.createElement('span');
+                textSpan.textContent = idea;
 
-        window.onload = function() {
-            let username = getCookie("username");
-            let code = generate6DigitCode();
-            let isGuest = !username;
+                const deleteBtn = document.createElement('button');
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.className = 'delete-btn';
+                // When delete is clicked, remove it from the array
+                deleteBtn.onclick = () => {
+                    ideas.splice(index, 1);
+                    saveAndRender();
+                };
 
-            if (isGuest) {
-                username = "Guest";
-                document.getElementById("guest-prompt").style.display = "block";
-                document.getElementById("user-panel").style.display = "none";
-                document.getElementById("welcome-msg").innerHTML = "You are currently browsing as a <strong>Guest</strong>.";
-            } else {
-                document.getElementById("guest-prompt").style.display = "none";
-                document.getElementById("user-panel").style.display = "block";
-                document.getElementById("welcome-msg").innerHTML = "Welcome back, <strong>" + username + "</strong>!";
-            }
-
-            // Write generated link details directly to Firebase Database
-            fetch(FIREBASE_URL + code + ".json", {
-                method: "PUT",
-                body: JSON.stringify({ name: username })
-            })
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById("link-code").innerText = code;
-            })
-            .catch(err => {
-                document.getElementById("link-code").innerText = "ERROR";
-                document.getElementById("welcome-msg").innerText = "Failed to connect to Firebase database.";
+                card.appendChild(textSpan);
+                card.appendChild(deleteBtn);
+                ideasContainer.prepend(card); // Puts newest ideas at the top
             });
+        }
 
-            // Handle Sign Up
-            document.getElementById("signup-btn").onclick = function() {
-                let inputName = document.getElementById("username-input").value.trim();
-                if (inputName) {
-                    setCookie("username", inputName, 365); // Save cookie for 1 year
-                    window.location.reload();
-                }
-            };
+        // Function to save to local storage and update the screen
+        function saveAndRender() {
+            localStorage.setItem('savedIdeas', JSON.stringify(ideas));
+            renderIdeas();
+        }
 
-            // Handle Sign Out
-            document.getElementById("logout-btn").onclick = function(e) {
-                e.preventDefault();
-                setCookie("username", "", -1); // Destroy cookie
-                window.location.reload();
-            };
-        };
+        // What happens when you click "Start Idea"
+        startBtn.addEventListener('click', () => {
+            const text = input.value.trim();
+            if (text !== '') {
+                ideas.push(text); // Add to our list
+                input.value = ''; // Clear the text box
+                saveAndRender(); // Save and update
+            }
+        });
+
+        // Draw the ideas when the page first loads
+        renderIdeas();
     </script>
+
 </body>
 </html>
