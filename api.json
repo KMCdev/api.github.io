@@ -22,5 +22,17 @@
     "updated": "2 months ago",
     "fileName": "timer_stopwatch.jar",
     "downloadUrl": "http://localhost:8000/timer_stopwatch.jar"
+  },
+  {
+    "name": "NetMacros-akazenithmacros",
+    "description": "A Macro Software in development",
+    "category": "Utility",
+    "loader": "None",
+    "version": "v1.48",
+    "downloads": 575,
+    "likes": 2,
+    "updated": "1 minute ago",
+    "fileName": "NetMacros.exe",
+    "downloadUrl": "http://localhost:8000/NetMacros.exe"
   }
 ]
